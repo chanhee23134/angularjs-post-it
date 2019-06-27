@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="main.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Post It Mission</title>
+</head>
+<body ng-app="mission" ng-controller="missionCtrl">
+<header>
+    <!--상단탭-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <span class="container">
+            <a class="navbar-brand" href="index.html">Post - It</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="mission.html">Mission</a>
+                </li>
+            </ul>
+        </span>
+    </nav>
+</header>
+
+<section>
+    <div class="container">
+        <ul>
+            <li ng-repeat="mission in missions">
+                <p>{{mission.title}}({{mission.result+'/'+mission.goal}})</p>
+                <p>{{getgetResultPercent(mission.result,mission.goal)}}</p>
+                <div class="progress mt-4 mb-4" style="margin: 4px">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                         aria-valuenow="{{mission.result}}" aria-valuemin="0" aria-valuemax="{{mission.goal}}"
+                         ng-style="{width : (mission.result*100)/mission.goal +'%' }">
+                        {{(mission.result*100)/mission.goal +'%'}}
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</section>
+</body>
+</html>
