@@ -86,6 +86,39 @@ todoListApp.controller('todoCtrl', function($scope) {
         $scope.sendTodoJson();
     }
 
+    // 모두체크 기능
+    $scope.allCheckingBtn = function() {
+        for(var idx = 0; idx < $scope.todos.length; idx++) {
+            $scope.todos[idx].checked = 'on';
+        }
+
+        $scope.sendTodoJson();
+    }
+
+    // 모두체크 해제 기능
+    $scope.allUncheckingBtn = function() {
+        for(var idx = 0; idx < $scope.todos.length; idx++) {
+            $scope.todos[idx].checked = 'off';
+        }
+        
+        $scope.sendTodoJson();
+    }
+    
+    // 체크된 아이템 삭제 기능
+    $scope.removeCheckedBtn = function() {
+        for(var idx = 0; idx < $scope.todos.length; idx++) {
+            if($scope.todos[idx].checked == 'on') {
+                $scope.todos.splice(idx,1);
+                $scope.missionClear(3, 1);
+
+                // 아이템 삭제시 index가 앞당겨지기 때문에 --;
+                idx--;
+            }
+        }
+
+        $scope.sendTodoJson();
+    }
+
     // 고정 기능
     $scope.fixingBtn = function (todo) {
         var idx = $scope.getIdx(todo);
@@ -130,18 +163,6 @@ todoListApp.controller('todoCtrl', function($scope) {
             $scope.missionClear(3, 1);
             $scope.sendMissionJson();
         }
-    }
-
-    // 체크된 아이템 삭제 기능
-    $scope.removeCheckedBtn = function() {
-        for(var idx = 0; idx < $scope.todos.length; i++) {
-            if($scope.todos[idx].checked == 'on') {
-                $scope.todos.splice(idx,1);
-                $scope.missionClear(3, 1);
-            }
-        }
-
-        $scope.sendTodoJson();
     }
 
     // missions
