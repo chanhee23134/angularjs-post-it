@@ -176,14 +176,6 @@ mainApp.controller('todoCtrl', function ($scope) {
         //for(var idx = 0;)
         $scope.sendTodoJson();
     }
-
-    // 모든 투두를 json에서 삭제
-    $scope.removeAllBtn = function () {
-        $scope.missionClear(3, Object.keys($scope.todos).length);
-        $scope.todos.splice(0, Object.keys($scope.todos).length);
-        $scope.sendTodoJson();
-        $scope.sendMissionJson();
-    }
 });
 
 missionApp.controller('missionCtrl', function ($scope) {
