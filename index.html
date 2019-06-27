@@ -1,247 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!--angularjs@1.7.8-->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular-animate.min.js"></script>
-    <script src="main.js"></script>
+    
+    <!--bootstrap@4.3.1-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!--js-->
+    <script src="index.js"></script>
+
+    <!--css-->
     <link rel="stylesheet" href="style.css">
+
     <title>Post It</title>
 </head>
-<body ng-app="main" ng-controller="todoCtrl">
-<header>
-    <!--상단탭-->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <span class="container">
-            <a class="navbar-brand" href="index.html">Post - It</a>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="mission.html">Mission</a>
-                </li>
-            </ul>
-            
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <form class="form-inline my-2 my-lg-0 ml-auto">
-                    <input class="form-control mr-sm-2" type="search" placeholder="검색" ng-model="search">
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"
-                            ng-click="searchBtn(search)">찾기</button>
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"
-                            ng-click="returnBtn()">검색초기화</button>
-                    <div class="dropdown">
-                        <button type="button" class="btn btn-outline-dark my-2 my-sm-0" data-toggle="dropdown">
-                            도구모음
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" ng-click="removeCheckedBtn()">체크항목 삭제</a>
-                            <a class="dropdown-item" href="#">Link 3</a>
+
+<body ng-app="todoList" ng-controller="todoCtrl">
+    <header>
+        <!--상단탭-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <span class="container">
+
+                <a class="navbar-brand" href="index.html">Post - It</a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="mission.html">Mission</a>
+                    </li>
+                </ul>
+                
+                <!--도구-->
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <form class="form-inline my-2 my-lg-0 ml-auto">
+                        <input class="form-control mr-sm-2" type="search" placeholder="검색" ng-model="search">
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"
+                                ng-click="searchBtn(search)">찾기</button>
+                        <button class="btn btn-outline-dark my-2 my-sm-0" type="submit"
+                                ng-click="returnBtn()">검색초기화</button>
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-outline-dark my-2 my-sm-0" data-toggle="dropdown">
+                                도구모음
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" ng-click="allCheckingBtn()">전체 체크</a>
+                                <a class="dropdown-item" ng-click="allUncheckingBtn()">전체 체크해제</a>
+                                <a class="dropdown-item" ng-click="removeCheckedBtn()">체크항목 삭제</a>
+                            </div>
                         </div>
+                    </form>
+                </div>
+                
+            </span>
+        </nav>
+    </header>
+    
+    <section>
+        <div class="container">
+            <!--대문-->
+            <div class="mt-2" ng-show="todos.length == 0">
+                <h1>
+                    새로운 투두를 추가해보세요.
+                </h1>
+            </div>
+
+            <!--입력창-->
+            <div style="margin: 3px">
+                <form class="input-group mt-3" name="todoForm">
+                    <input class="form-control" type="text" placeholder="제목" ng-model="newTitle" minlength="3">
+                    <input class="form-control" type="text" placeholder="내용" ng-model="newContent" minlength="3">
+                    <input class="form-control" type="text" placeholder="#태그" ng-model="newHashTag" minlength="1">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-primary" type="button" ng-click="addBtn(newTitle, newContent, newHashTag)">
+                            추가하기
+                        </button>
                     </div>
                 </form>
-            </div>
-        </span>
-    </nav>
-</header>
 
-<section>
-<div class="container">
-        <div class="mt-2" ng-show="todos.length == 0">
-            <h1>
-                새로운 투두를 추가해보세요.
-            </h1>
-        </div>
-
-        <!--입력창-->
-        <div style="margin: 3px">
-            <form class="input-group mt-3" name="todoForm">
-                <input class="form-control" type="text" placeholder="제목" ng-model="newTitle" minlength="3">
-                <input class="form-control" type="text" placeholder="내용" ng-model="newContent" minlength="3">
-                <input class="form-control" type="text" placeholder="#태그" ng-model="newHashTag" minlength="1">
-                <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" ng-click="addBtn(newTitle, newContent, newHashTag)">
-                        추가하기
-                    </button>
+                <!--양식 안내-->
+                <div ng-show="todoForm.$dirty && todoForm.$invalid">
+                    <div class="alert alert-warning" role="alert">[제목,내용: 3자] [해시태그: 1자] 양식을 맞춰주세요.</div>
                 </div>
-            </form>
-            <div ng-show="todoForm.$dirty && todoForm.$invalid">
-                <div class="alert alert-warning" role="alert">[제목,내용: 3자] [해시태그: 1자] 양식을 맞춰주세요.</div>
+            </div>
+            
+            <!--투두리스트-->
+            <div class="row" style="display: inline-flex">
+                <!--todo-->
+                <ul style="max-width: 20rem; min-width: 20rem;">
+                    <h4 class="label">해야할 일</h4>
+
+                    <!--고정된 아이템-->
+                    <li ng-repeat="todo in todos | filter : todo.completed = 'todo' | filter : todo.fixed = true | filter : searchData">
+                        <div class="card border-primary mb-3" style="max-width: 20rem; min-width: 20rem;">
+                            <!--헤더-->
+                            <div class="card-header">
+                                <p>{{todo.title}}</p>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
+                                    <label class="custom-control-label" for="{{getIdx(todo)}}">
+                                </div>
+                            </div>
+
+                            <!--바디-->
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{todo.content}}
+                                    <br><br>
+                                    <span class="badge badge-pill badge-primary">
+                                        {{todo.hashTag}}
+                                    </span>
+                                </p>
+
+                                <!--도구-->
+                                <form>
+                                    <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
+                                            ng-click="fixingBtn(todo)">해제
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo)">전환
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
+                                            ng-click="removeBtn(todo)">삭제
+                                    </button>
+                                </form>
+
+                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!--고정해제된 아이템-->
+                    <li ng-repeat="todo in todos | filter : todo.completed = 'todo' | filter : todo.fixed = false | filter : searchData">
+                        <div class="card border-primary mb-3" style="max-width: 20rem; min-width: 20rem;">
+                            <!--헤더-->
+                            <div class="card-header">
+                                <p>{{todo.title}}</p>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
+                                    <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
+                                </div>
+                            </div>
+
+                            <!--바디-->
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{todo.content}}
+                                    <br><br>
+                                    <span class="badge badge-pill badge-primary">
+                                        {{todo.hashTag}}
+                                    </span>
+                                </p>
+
+                                <!--도구-->
+                                <form>
+                                    <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
+                                            ng-click="fixingBtn(todo)">고정
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo)">전환
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
+                                            ng-click="removeBtn(todo)">삭제
+                                    </button>
+                                </form>
+
+                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+                <!--doing-->
+                <ul style="max-width: 20rem; min-width: 20rem;">
+                    <h4 class="label">하고있는 일</h4>
+
+                    <!--고정된 아이템-->
+                    <li ng-repeat="todo in todos | filter : todo.completed = 'doing' | filter : todo.fixed = true  | filter : searchData">
+                        <div class="card border-success mb-3" style="max-width: 20rem; min-width: 20rem;">
+                            <!--헤더-->
+                            <div class="card-header">
+                                <p>{{todo.title}}</p>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
+                                    <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
+                                </div>
+                            </div>
+
+                            <!--바디-->
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{todo.content}}
+                                    <br><br>
+                                    <span class="badge badge-pill badge-success">
+                                        {{todo.hashTag}}
+                                    </span>
+                                </p>
+
+                                <!--도구-->
+                                <form>
+                                    <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
+                                            ng-click="fixingBtn(todo)">해제
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-dark my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo)">전환
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
+                                            ng-click="removeBtn(todo)">삭제
+                                    </button>
+                                </form>
+
+                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!--고정해제된 아이템-->
+                    <li ng-repeat="todo in todos | filter : todo.completed = 'doing' | filter : todo.fixed = false | filter : searchData">
+                        <div class="card border-success mb-3" style="max-width: 20rem; min-width: 20rem;">
+                            <!--헤더-->
+                            <div class="card-header">
+                                <p>{{todo.title}}</p>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
+                                    <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
+                                </div>
+                            </div>
+
+                            <!--바디-->
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{todo.content}}
+                                    <br><br>
+                                    <span class="badge badge-pill badge-success">
+                                        {{todo.hashTag}}
+                                    </span>
+                                </p>
+                                
+                                <!--도구-->
+                                <form>
+                                    <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
+                                            ng-click="fixingBtn(todo)">고정
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-dark my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo)">전환
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
+                                            ng-click="removeBtn(todo)">삭제
+                                    </button>
+                                </form>
+                                
+                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
+                            </div>
+                        </div>
+
+                    </li>
+
+                </ul>
+
+                <!--done-->
+                <ul style="max-width: 20rem; min-width: 20rem;">
+                    <h4 class="label">모두한 일</h4>
+
+                    <!--고정된 아이템-->
+                    <li ng-repeat="todo in todos | filter : todo.completed = 'done' | filter : todo.fixed = true | filter : searchData">
+                        <div class="card border-dark mb-3" style="max-width: 20rem; min-width: 20rem;">
+                            <!--헤더-->
+                            <div class="card-header">
+                                <p>{{todo.title}}</p>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
+                                    <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
+                                </div>
+                            </div>
+
+                            <!--바디-->
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{todo.content}}
+                                    <br><br>
+                                    <span class="badge badge-pill badge-dark">
+                                        {{todo.hashTag}}
+                                    </span>
+                                </p>
+
+                                <!--도구-->
+                                <form>
+                                    <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
+                                            ng-click="fixingBtn(todo)">해제
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
+                                            ng-click="removeBtn(todo)">삭제
+                                    </button>
+                                </form>
+                                
+                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!--고정해제된 아이템-->
+                    <li ng-repeat="todo in todos | filter : todo.completed = 'done' | filter : todo.fixed = false | filter : searchData">
+                        <div class="card border-dark mb-3" style="max-width: 20rem; min-width: 20rem;">
+                            <!--헤더-->
+                            <div class="card-header">
+                                <p>{{todo.title}}</p>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
+                                    <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
+                                </div>
+                            </div>
+
+                            <!--보디-->
+                            <div class="card-body">
+                                <p class="card-text">
+                                    {{todo.content}}
+                                    <br><br>
+                                    <span class="badge badge-pill badge-dark">
+                                        {{todo.hashTag}}
+                                    </span>
+                                </p>
+
+                                <!--도구-->
+                                <form>
+                                    <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
+                                            ng-click="fixingBtn(todo)">고정
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
+                                            ng-click="removeBtn(todo)">삭제
+                                    </button>
+                                </form>
+                                
+                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
             </div>
         </div>
-
-        <!--포스트잇-->
-        <div class="row" style="display: inline-flex">
-            <!--포스트잇 todo-->
-            <ul style="max-width: 20rem; min-width: 20rem;">
-                <h4 class="label">해야할 일</h4>
-                <li ng-repeat="todo in todos | filter : todo.completed = 'todo' | filter : todo.fixed = true | filter : searchData">
-                    <div class="card border-primary mb-3" style="max-width: 20rem; min-width: 20rem;">
-                        <div class="card-header">
-                            <p>{{todo.title}}</p>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
-                                <label class="custom-control-label" for="{{getIdx(todo)}}">
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{todo.content}} <br><br> <span class="badge badge-pill badge-primary">{{todo.hashTag}}</span></p>
-                            <form>
-                                <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
-                                        ng-click="fixingBtn(todo)">해제
-                                </button>
-                                <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
-                                        ng-click="changeCompletedBtn(todo)">전환
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
-                                        ng-click="removeBtn(todo)">삭제
-                                </button>
-                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-                <li ng-repeat="todo in todos | filter : todo.completed = 'todo' | filter : todo.fixed = false | filter : searchData">
-                    <div class="card border-primary mb-3" style="max-width: 20rem; min-width: 20rem;">
-                        <div class="card-header">
-                            <p>{{todo.title}}</p>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
-                                <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{todo.content}} <br><br> <span class="badge badge-pill badge-primary">{{todo.hashTag}}</span></p>
-                            <form>
-                                <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
-                                        ng-click="fixingBtn(todo)">고정
-                                </button>
-                                <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
-                                        ng-click="changeCompletedBtn(todo)">전환
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
-                                        ng-click="removeBtn(todo)">삭제
-                                </button>
-                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-
-            <!--포스트잇 doing-->
-            <ul style="max-width: 20rem; min-width: 20rem;">
-                <h4 class="label">하고있는 일</h4>
-                <li ng-repeat="todo in todos | filter : todo.completed = 'doing' | filter : todo.fixed = true  | filter : searchData">
-                    <div class="card border-success mb-3" style="max-width: 20rem; min-width: 20rem;">
-                        <div class="card-header">
-                            <p>{{todo.title}}</p>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
-                                <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{todo.content}} <br><br> <span class="badge badge-pill badge-success">{{todo.hashTag}}</span></p>
-                            <form>
-                                <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
-                                        ng-click="fixingBtn(todo)">해제
-                                </button>
-                                <button class="btn btn-sm btn-outline-dark my-2 my-sm-0" type="button"
-                                        ng-click="changeCompletedBtn(todo)">전환
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
-                                        ng-click="removeBtn(todo)">삭제
-                                </button>
-                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-                <li ng-repeat="todo in todos | filter : todo.completed = 'doing' | filter : todo.fixed = false | filter : searchData">
-                    <div class="card border-success mb-3" style="max-width: 20rem; min-width: 20rem;">
-                        <div class="card-header">
-                            <p>{{todo.title}}</p>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
-                                <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{todo.content}} <br><br> <span class="badge badge-pill badge-success">{{todo.hashTag}}</span></p>
-                            <form>
-                                <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
-                                        ng-click="fixingBtn(todo)">고정
-                                </button>
-                                <button class="btn btn-sm btn-outline-dark my-2 my-sm-0" type="button"
-                                        ng-click="changeCompletedBtn(todo)">전환
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
-                                        ng-click="removeBtn(todo)">삭제
-                                </button>
-                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-
-            <!--포스트잇 done-->
-            <ul style="max-width: 20rem; min-width: 20rem;">
-                <h4 class="label">모두한 일</h4>
-                <li ng-repeat="todo in todos | filter : todo.completed = 'done' | filter : todo.fixed = true | filter : searchData">
-                    <div class="card border-dark mb-3" style="max-width: 20rem; min-width: 20rem;">
-                        <div class="card-header">
-                            <p>{{todo.title}}</p>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
-                                <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{todo.content}} <br><br> <span class="badge badge-pill badge-dark">{{todo.hashTag}}</span></p>
-                            <form>
-                                <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
-                                        ng-click="fixingBtn(todo)">해제
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
-                                        ng-click="removeBtn(todo)">삭제
-                                </button>
-                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-                <li ng-repeat="todo in todos | filter : todo.completed = 'done' | filter : todo.fixed = false | filter : searchData">
-                    <div class="card border-dark mb-3" style="max-width: 20rem; min-width: 20rem;">
-                        <div class="card-header">
-                            <p>{{todo.title}}</p>
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="{{getIdx(todo)}}" ng-checked="todo.checked == 'on'" ng-click="checkingBtn(todo)">
-                                <label class="custom-control-label" for="{{getIdx(todo)}}"></label>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">{{todo.content}} <br><br> <span class="badge badge-pill badge-dark">{{todo.hashTag}}</span></p>
-                            <form>
-                                <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
-                                        ng-click="fixingBtn(todo)">고정
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
-                                        ng-click="removeBtn(todo)">삭제
-                                </button>
-                                <p>{{todo.date | date:'yyyy-MM-dd(hh:mm)'}}</p>
-                            </form>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</section>
+    </section>
 </body>
+
 </html>
