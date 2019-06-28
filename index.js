@@ -140,17 +140,19 @@ todoListApp.controller('todoCtrl', function($scope) {
     }
 
     // 투두 단계 전환
-    $scope.changeCompletedBtn = function (todo) {
+    $scope.changeCompletedBtn = function (todo, whatCompleted) {
         var idx = $scope.getIdx(todo);
 
         // 예외처리
         if (idx > -1) {
-            if ($scope.todos[idx].completed == 'todo') {
+            if (whatCompleted == 'doing') {
                 $scope.todos[idx].completed = completed.doing;
                 $scope.missionClear(1, 1);
-            } else {
+            } else if (whatCompleted == 'done') {
                 $scope.todos[idx].completed = completed.done;
                 $scope.missionClear(2, 1);
+            } else {
+                $scope.todos[idx].completed = completed.todo;
             }
 
             $scope.sendTodoJson();

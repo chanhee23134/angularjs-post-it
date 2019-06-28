@@ -128,7 +128,7 @@
                                             ng-click="fixingBtn(todo)">해제
                                     </button>
                                     <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
-                                            ng-click="changeCompletedBtn(todo)">전환
+                                            ng-click="changeCompletedBtn(todo,'doing')">전환
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
                                             ng-click="removeBtn(todo)">삭제
@@ -172,7 +172,7 @@
                                             ng-click="fixingBtn(todo)">고정
                                     </button>
                                     <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
-                                            ng-click="changeCompletedBtn(todo)">전환
+                                            ng-click="changeCompletedBtn(todo,'doing')">전환
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
                                             ng-click="removeBtn(todo)">삭제
@@ -221,8 +221,11 @@
                                     <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
                                             ng-click="fixingBtn(todo)">해제
                                     </button>
+                                    <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo,'todo')">전환
+                                    </button>
                                     <button class="btn btn-sm btn-outline-dark my-2 my-sm-0" type="button"
-                                            ng-click="changeCompletedBtn(todo)">전환
+                                            ng-click="changeCompletedBtn(todo,'done')">전환
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
                                             ng-click="removeBtn(todo)">삭제
@@ -265,8 +268,11 @@
                                     <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
                                             ng-click="fixingBtn(todo)">고정
                                     </button>
+                                    <button class="btn btn-sm btn-outline-primary my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo,'todo')">전환
+                                    </button>
                                     <button class="btn btn-sm btn-outline-dark my-2 my-sm-0" type="button"
-                                            ng-click="changeCompletedBtn(todo)">전환
+                                            ng-click="changeCompletedBtn(todo,'done')">전환
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
                                             ng-click="removeBtn(todo)">삭제
@@ -316,6 +322,9 @@
                                     <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
                                             ng-click="fixingBtn(todo)">해제
                                     </button>
+                                    <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo,'doing')">전환
+                                    </button>
                                     <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
                                             ng-click="removeBtn(todo)">삭제
                                     </button>
@@ -356,6 +365,9 @@
                                 <form>
                                     <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
                                             ng-click="fixingBtn(todo)">고정
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-success my-2 my-sm-0" type="button"
+                                            ng-click="changeCompletedBtn(todo,'doing')">전환
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger my-2 my-sm-0" type="button"
                                             ng-click="removeBtn(todo)">삭제
