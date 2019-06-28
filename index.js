@@ -39,12 +39,18 @@ todoListApp.controller('todoCtrl', function($scope) {
                 title: newTitle,
                 checked: 'off',
                 content: newContent,
-                hashTag: '#' + newHashTag,
+                hashTags: [],
                 fixed: false,
                 completed: completed.todo,
                 date: Date.now()
             };
-            
+
+            var hashTagArray = newHashTag.split(',');
+            for (var idx = 0; idx < hashTagArray.length; idx++) {
+                var json = {hashTag: '#' + hashTagArray[idx]};
+                newTodo.hashTags.push(json);
+            }
+
             $scope.todos.push(newTodo);
 
             // Input Element 초기화

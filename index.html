@@ -75,8 +75,8 @@
             <div style="margin: 3px">
                 <form class="input-group mt-3" name="todoForm">
                     <input class="form-control" type="text" placeholder="제목" ng-model="newTitle" minlength="3">
-                    <input class="form-control" type="text" placeholder="내용" ng-model="newContent" minlength="3">
-                    <input class="form-control" type="text" placeholder="#태그" ng-model="newHashTag" minlength="1">
+                    <input class="form-control" type="text" placeholder="내용" ng-model="newContent" minlength="3" maxlength="34">
+                    <input class="form-control" type="text" placeholder="#태그" ng-model="newHashTag" minlength="1" maxlength="19">
                     <div class="input-group-append">
                         <button class="btn btn-outline-primary" type="button" ng-click="addBtn(newTitle, newContent, newHashTag)">
                             추가하기
@@ -86,7 +86,7 @@
 
                 <!--양식 안내-->
                 <div ng-show="todoForm.$dirty && todoForm.$invalid">
-                    <div class="alert alert-warning" role="alert">[제목,내용: 3자] [해시태그: 1자] 양식을 맞춰주세요.</div>
+                    <div class="alert alert-warning" role="alert">[제목: 3~34자] [내용: 3자 이상] [해시태그: 1~19자] 양식을 맞춰주세요.</div>
                 </div>
             </div>
             
@@ -113,9 +113,13 @@
                                 <p class="card-text">
                                     {{todo.content}}
                                     <br><br>
-                                    <span class="badge badge-pill badge-primary">
-                                        {{todo.hashTag}}
-                                    </span>
+                                    <ul>
+                                        <li ng-repeat="hashTags in todo.hashTags track by $index">
+                                            <span class="badge badge-pill badge-primary">
+                                                {{hashTags.hashTag}}
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </p>
 
                                 <!--도구-->
@@ -150,14 +154,18 @@
 
                             <!--바디-->
                             <div class="card-body">
-                                <p class="card-text">
-                                    {{todo.content}}
-                                    <br><br>
-                                    <span class="badge badge-pill badge-primary">
-                                        {{todo.hashTag}}
-                                    </span>
-                                </p>
-
+                                <ul>
+                                    <p class="card-text">
+                                        {{todo.content}}
+                                        <br><br>
+                                    
+                                        <li ng-repeat="hashTags in todo.hashTags track by $index" style="overflow: hidden">
+                                            <span class="badge badge-pill badge-primary" >
+                                                {{hashTags.hashTag}}
+                                            </span>
+                                        </li>
+                                    </p>
+                                </ul>
                                 <!--도구-->
                                 <form>
                                     <button class="btn btn-sm btn-outline-warning my-2 my-sm-0" type="button"
@@ -199,9 +207,13 @@
                                 <p class="card-text">
                                     {{todo.content}}
                                     <br><br>
-                                    <span class="badge badge-pill badge-success">
-                                        {{todo.hashTag}}
-                                    </span>
+                                    <ul>
+                                        <li ng-repeat="hashTags in todo.hashTags track by $index">
+                                            <span class="badge badge-pill badge-success">
+                                                {{hashTags.hashTag}}
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </p>
 
                                 <!--도구-->
@@ -239,9 +251,13 @@
                                 <p class="card-text">
                                     {{todo.content}}
                                     <br><br>
-                                    <span class="badge badge-pill badge-success">
-                                        {{todo.hashTag}}
-                                    </span>
+                                    <ul>
+                                        <li ng-repeat="hashTags in todo.hashTags track by $index">
+                                            <span class="badge badge-pill badge-success">
+                                                {{hashTags.hashTag}}
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </p>
                                 
                                 <!--도구-->
@@ -286,9 +302,13 @@
                                 <p class="card-text">
                                     {{todo.content}}
                                     <br><br>
-                                    <span class="badge badge-pill badge-dark">
-                                        {{todo.hashTag}}
-                                    </span>
+                                    <ul>
+                                        <li ng-repeat="hashTags in todo.hashTags track by $index">
+                                            <span class="badge badge-pill badge-dark">
+                                                {{hashTags.hashTag}}
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </p>
 
                                 <!--도구-->
@@ -323,9 +343,13 @@
                                 <p class="card-text">
                                     {{todo.content}}
                                     <br><br>
-                                    <span class="badge badge-pill badge-dark">
-                                        {{todo.hashTag}}
-                                    </span>
+                                    <ul>
+                                        <li ng-repeat="hashTags in todo.hashTags track by $index">
+                                            <span class="badge badge-pill badge-dark">
+                                                {{hashTags.hashTag}}
+                                            </span>
+                                        </li>
+                                    </ul>
                                 </p>
 
                                 <!--도구-->
